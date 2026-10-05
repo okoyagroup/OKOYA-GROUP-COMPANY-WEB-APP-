@@ -1,0 +1,133 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body {
+                  background-color: white; /* Ensure the iframe has a white background */
+                }
+
+                
+              </style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offline | Okoya Group</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#059669,#047857);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:#fff;font-weight:800}
+h1{font-size:24px;font-weight:800;margin-bottom:8px}
+.sub{color:#64748b;font-size:14px;margin-bottom:32px;max-width:400px;line-height:1.5}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;margin-bottom:16px;max-width:440px;width:100%;text-align:left}
+.card h3{font-size:14px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card p{font-size:12px;color:#64748b;line-height:1.5}
+.btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#059669,#047857);color:#fff;border:none;border-radius:12px;padding:14px 28px;font-size:14px;font-weight:800;cursor:pointer;margin-top:8px}
+.footer{margin-top:24px;font-size:10px;color:#64748b}
+@media(prefers-color-scheme:dark){body{background:#0c1222;color:#f1f5f9}.card{background:#1a2332;border-color:#2d3f56}.card p{color:#94a3b8}.sub{color:#94a3b8}.footer{color:#94a3b8}}
+</style>
+</head>
+<body>
+<div class="">
+    <a href="/">
+        <img src="logo.ico" alt="Logo">
+    </a>
+</div>
+<h1>No Internet Connection</h1>
+<p class="sub">You are currently offline. Please check your internet connection and try again.</p>
+<div class="card"><h3>What happened?</h3><p>Your device lost its internet connection. This could be due to network issues, airplane mode, or server maintenance.</p></div>
+<div class="card"><h3>What you can do</h3><p>Check your Wi-Fi or mobile data connection. Try reloading the page. <a href="https://wa.me/2347039935124" target="_blank">Contact the IT support if the issue persists</a>.</p></div>
+<button class="btn" onclick="window.location.reload()">Retry Connection</button>
+<h5 class="footer">&copy; 2026 Okoya Group Company Limited </br>
+    Developped by Lawani Djamiou alade </h5>
+<script>
+window.addEventListener('online',function(){document.querySelector('h1').textContent='Connection Restored';setTimeout(function(){window.location.reload()},1500)});
+</script>
+</body>
+</html>
+<link rel="manifest" href="https://progressier.app/Hk3Tm4GYoKZlWrSnwgtZ/progressier.json"/>
+<script defer src="https://progressier.app/Hk3Tm4GYoKZlWrSnwgtZ/script.js"></script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js',{scope:'/'})
+      .then(function(reg){console.log('SW registered:',reg.scope)})
+      .catch(function(err){console.error('SW failed:',err)});
+  });
+}
+</script>
+
+
+              <script>
+                              var CACHE_NAME = 'okoya-sw-v5';
+var OFFLINE_URL = '/offline.html';
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(['/', '/offline.html']);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(keys.filter(function(k) {
+        return k !== CACHE_NAME;
+      }).map(function(k) {
+        return caches.delete(k);
+      }));
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', function(event) {
+  if (event.request.method !== 'GET') return;
+  var url;
+  try { url = new URL(event.request.url); } catch(e) { return; }
+  if (url.searchParams.has('action')) return;
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then(function(response) {
+        var clone = response.clone();
+        caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, clone); });
+        return response;
+      }).catch(function() {
+        return caches.match(OFFLINE_URL);
+      })
+    );
+    return;
+  }
+  event.respondWith(
+    caches.match(event.request).then(function(cached) {
+      if (cached) return cached;
+      return fetch(event.request).then(function(response) {
+        if (response && response.status === 200) {
+          var clone = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) { cache.put(event.request, clone); });
+        }
+        return response;
+      }).catch(function() {
+        return new Response('', { status: 408 });
+      });
+    })
+  );
+});
+
+
+              </script>
+                        </body>
+                        </html>
+                    
